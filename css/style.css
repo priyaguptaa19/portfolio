@@ -632,3 +632,4 @@ nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items
 .tl-knob { transition-duration: .16s; transition-timing-function: var(--ease); }
 .tl-zone, .tl-knob, .tl-hint, .soc a.si { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .tl-zone { -webkit-tap-highlight-color: transparent; }
+#about > .wrap > h2 { margin-bottom: clamp(28px, 4vw, 48px); }

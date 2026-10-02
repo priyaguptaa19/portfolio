@@ -36,8 +36,8 @@ window.STORIES["rentzgo"] = {
         { t: "img", src: "architecture.webp", alt: "Journeys per role. Tenant: discover, apply, pay, manage. Landlord: list, tenants, payments, maintenance. Service Partner: verify, get jobs, earn, tips. Admin: users, verification, disputes, oversight" },
         { t: "h3", text: "The real information architecture of the platform." },
         { t: "duo2",
-          left: { src: "ia-tree.webp", alt: "Sitemap of the platform for Tenant, Owner, Handyman and Admin roles", cap: "Information architecture." },
-          right: { src: "flow-ssn.webp", alt: "SSN verification flow with approval, rejection and a 48-hour pending state", cap: "SSN verification flow." } },
+          left: { src: "ia-tree.webp", alt: "Sitemap of the platform for Tenant, Owner, Handyman and Admin roles", cap: "Information architecture.", pan: true, ar: 0.8, arm: 0.8 },
+          right: { src: "flow-ssn.webp", alt: "SSN verification flow with approval, rejection and a 48-hour pending state", cap: "SSN verification flow.", pan: true, ar: 0.8, arm: 0.8 } },
       ],
     },
     {

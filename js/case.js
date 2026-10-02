@@ -27,7 +27,7 @@
       case "eyebrow": return `<div class="seyebrow"><span>${b.text}</span><em class="snote">${b.note}</em></div>`;
       case "img": return b.pan ? panFig(b, base) : plainFig(b, base);
       case "gallery": return `<div class="sgal">${b.items.map((x) => plainFig(x, base)).join("")}</div>`;
-      case "duo2": return `<div class="sduo even">${plainFig(b.left, base)}${plainFig(b.right, base)}</div>`;
+      case "duo2": return `<div class="sduo even">${[b.left, b.right].map((x) => (x.pan ? panFig(x, base) : plainFig(x, base))).join("")}</div>`;
       case "duo": return `<div class="sduo">${b.left.pan ? panFig(b.left, base) : plainFig(b.left, base)}${plainFig(b.right, base)}</div>`;
       case "flow": return `<div class="sflow">${b.chips.map(([t, s], i) => `${i ? '<span class="arr" aria-hidden="true">&rarr;</span>' : ""}<div class="chip"><b>${t}</b><span>${s}</span></div>`).join("")}</div>`;
       case "big": return `<p class="sbig">${b.lines.map((l) => `<span>${hl(l)}</span>`).join("")}</p>`;
@@ -69,6 +69,7 @@
     document.body.insertAdjacentHTML("afterbegin", '<div class="cs-progress" aria-hidden="true"></div>');
     [".cs-hero h1", ".cs-hero .lede", ".cs-cover", ".cs-meta"].forEach((sel, i) => { const el = $(sel); if (el) { el.classList.add("fade"); el.style.setProperty("--d", (0.05 + i * 0.09) + "s"); } });
     document.querySelectorAll(".sfig, .sbig").forEach((el) => el.classList.add("rv"));
+    document.querySelectorAll(".scards, .ssteps, .sflow, .smodel .kids, .sversus, .sgal, .sinstead, .skeep, .spair").forEach((g) => [...g.children].forEach((el, i) => { el.classList.add("rv"); el.style.transitionDelay = Math.min(i, 5) * 60 + "ms"; }));
     window.reveal();
     return;
   }

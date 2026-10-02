@@ -33,7 +33,7 @@ window.SITE = {
   ],
   cycle: ["research", "design", "test", "ship"],
   showSamples: false, // set true to also show the placeholder projects
-  work: { title: "Selected work", hint: "Select a project to read the story." },
+  work: { title: "Work", hint: "Select a project to read the story." },
   photoAbout: "assets/priya.webp",
   about: [
     [

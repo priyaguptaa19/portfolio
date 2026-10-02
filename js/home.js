@@ -59,8 +59,8 @@
     for (const [el, nav] of secs) { const r = el.getBoundingClientRect(); if (r.top <= line && r.bottom > line) cur = nav; }
     links.forEach((x) => { const on = !!cur && x.getAttribute("href").endsWith("#" + cur); x.toggleAttribute("aria-current", on); if (on) x.setAttribute("aria-current", "true"); });
   };
-  let navRaf = 0;
-  addEventListener("scroll", () => { if (!navRaf) navRaf = requestAnimationFrame(() => { navRaf = 0; markNav(); }); }, { passive: true });
+  const navIO = new IntersectionObserver(markNav, { rootMargin: "-40% 0px -59% 0px" });
+  secs.forEach(([el]) => navIO.observe(el));
   addEventListener("resize", markNav);
   markNav();
   // work grid: large covers. Hover shows the result, click opens the case study. Grows with the project count.
@@ -82,7 +82,7 @@
 
   // about
   const seg = (a) => a.map((s) => { const w = s.t.split(" ").map((x) => `<span class="wd">${x}</span>`).join(" "); return s.tone === "hl" ? `<span class="hl">${w}</span>` : w; }).join("");
-  $("#about").innerHTML = `<div class="wrap"><h2 class="sr">About</h2><div class="about">
+  $("#about").innerHTML = `<div class="wrap"><h2>About</h2><div class="about">
       <div class="photo"><img src="${S.photoAbout}" alt="${S.name}" loading="lazy" onerror="this.parentNode.classList.add('no-photo')"><span class="ph-label mono">Add your portrait at assets/priya.webp</span></div>
       <div class="about-text">${S.about.map((p) => `<p>${seg(p)}</p>`).join("")}</div></div>
     <div class="toolkit"><span class="mono">Toolkit</span><ul>${S.tools.map((x) => `<li class="tool" style="--c:${x.hex}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${(window.ICONS || {})[x.icon] || ""}"/></svg><span>${x.n}</span></li>`).join("")}</ul></div></div></div>`;

@@ -24,7 +24,7 @@
   const f = $("#footer");
   if (f) f.innerHTML = `<div class="wrap" id="contact"><div class="panel">
     <p class="mono avail">${S.available ? "Open to product design roles." : "Not available right now"}</p>
-    <h2 class="cta-h"><span class="l1">Let\u2019s <span class="cyc">${S.cycle.map((w, i) => '<span class="cw' + (i ? '' : ' is') + '">' + w + '</span>').join("")}</span></span><span class="l2">products people never think about.</span></h2>
+    <h2 class="cta-h"><span class="l1">Let\u2019s <span class="cyc">${S.cycle.map((w, i) => '<span class="cw' + (i ? '' : ' is') + '">' + w + '</span>').join("")}</span></span><span class="l2">something incredible together.</span></h2>
     <div class="cols">
       <div><span class="mono">Email</span><a class="big" href="${S.mailHref}">${S.email}</a></div>
       <div><span class="mono">Call</span><a class="big" href="${S.phoneHref}">${S.phone}</a></div>
