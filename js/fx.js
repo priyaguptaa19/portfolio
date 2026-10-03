@@ -1,6 +1,6 @@
 // Small premium touches: footer verb cycle, magnetic primary buttons.
 (() => {
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = false; // reduce-motion is intentionally ignored
   const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   // footer: the verb swaps with a soft blur, only while the footer is on screen
@@ -12,11 +12,11 @@
       const cur = words[i]; i = (i + 1) % words.length; const next = words[i];
       cur.classList.remove("is", "in"); cur.classList.add("out");
       next.classList.remove("out"); next.classList.add("in");
-      setTimeout(() => cur.classList.remove("out"), 700);
+      setTimeout(() => cur.classList.remove("out"), 500);
     };
     new IntersectionObserver(([e]) => {
       clearInterval(timer);
-      if (e.isIntersecting) timer = setInterval(step, 2600);
+      if (e.isIntersecting) timer = setInterval(step, 1800);
     }, { threshold: .3 }).observe(cyc);
   }
 

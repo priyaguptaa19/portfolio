@@ -19,10 +19,12 @@ Goal: appeal to senior designers and HR. Look: minimal, modern, playful, light o
 - Footer socials are icon-only with a hover label. Resume lives in the top nav only.
 - Experience is an interactive timeline (desktop horizontal, phone vertical), adapted from Sneha's site.
 
+- **Reduce motion is ignored on purpose** (owner decision, 2026-10-03): all animation plays even when the device has "Reduce Motion" on. The `prefers-reduced-motion` CSS blocks and JS checks were removed (JS keeps `reduced = false` constants). This is less accessible for people with motion sensitivity; the owner accepted that. Do not re-add it unless asked.
+
 ## How to handle a request (playbook)
 1. Find where the thing lives: text in `js/content.js` or a `js/story-*.js` file; look in "Text that is NOT in content.js" if not found; styles in `css/style.css`.
 2. Make the smallest change that does it. Do not refactor or redesign unasked.
-3. Keep every rule in "Conventions" (motion limits, contrast, no emoji icons, tap targets, hover gating, reduced motion).
+3. Keep every rule in "Conventions" (motion limits, contrast, no emoji icons, tap targets, hover gating).
 4. Reuse existing blocks, classes and tokens. Add a new CSS value only if no token fits, and put it at the end of the right section.
 5. Verify (see below), then tell the owner in plain words what changed and which file.
 6. If the request is vague, conflicts with a decision above, or needs a fact you do not have, ask one short question first.
@@ -44,7 +46,7 @@ Goal: appeal to senior designers and HR. Look: minimal, modern, playful, light o
 ## Before you say it is done (checklist)
 - Open `index.html` and each `case.html?p=` page (virtual-waiter, rentzgo, nexus). No console errors, no sideways scroll at 390px and 1440px wide.
 - All images load. Every image has alt text. Links work.
-- Motion respects `prefers-reduced-motion`; hover rules stay inside the hover media query.
+- Hover rules stay inside the hover media query. Do not add `prefers-reduced-motion` handling (see Decisions).
 - Text has no em-dashes, no invented numbers, no filler words.
 - Nothing from `refs/` was copied in.
 - Update `README.md` if a new editable field or file was added.
@@ -118,11 +120,16 @@ Block types (case.js `renderBlock`): `p, lead, h3, note, eyebrow, img, gallery, 
 - Hero: word-rise headline (`hero.headline` = `l1`, `before`, `circle`, `after`), hand-drawn ring round the `circle` word (hover shows a selection frame and a "Priya" cursor tag), portrait, handwritten notes with pointer parallax, "Currently at" status.
 - Section titles: Work (`SITE.work.title`), About (visible h2), Experience.
 - Work: `.pgrid` of large covers. First card is featured unless exactly 2 projects. Hover shows the metric, click opens the story.
-- Experience: draggable knob on a line with one bump; zones per job; stat bubbles; hint "drag me". Under 760px width a vertical version (`.tlv`) replaces it. The old `.xp` list stays in the DOM but is hidden.
+- Experience: draggable knob on a line with one bump; zones per job; stat bubbles; hint "drag me". Under 760px width a vertical version (`.tlv`) replaces it: it is not pinned: the job under a reading line (55% down the screen) becomes current as the page scrolls, forward and back (IntersectionObserver, no scroll listener); drag and tap still work. The old `.xp` list stays in the DOM but is hidden.
 - Footer: cobalt `.panel`, cycling headline word, email, phone, round icon-only social buttons with hover tooltip.
-- Scroll-in motion (IntersectionObserver, off under reduced motion): work cards replay on every pass, down or up (image settles slowly, title follows); the experience timeline redraws its line and glides the knob each time it scrolls into view and resets when fully off screen; page-to-page slide on the hosted site. Only these three; do not add more without asking.
+- Scroll-in motion (IntersectionObserver): work cards replay on every pass, down or up (image settles slowly, title follows); the experience timeline redraws its line and glides the knob each time it scrolls into view and resets when fully off screen; page-to-page slide on the hosted site. Only these three; do not add more without asking.
 - Cursor: custom dot (mix-blend-mode difference) with label; only on mouse devices.
-- Hover rules are gated by `@media (hover: hover) and (pointer: fine)`. `prefers-reduced-motion` turns movement off. Keep both when adding styles.
+- Hover rules are gated by `@media (hover: hover) and (pointer: fine)`. Keep that gating when adding styles. The device reduce-motion setting is intentionally ignored.
+
+## Performance notes
+- Page weight is small (home about 660KB, case studies 280-390KB on a slow phone profile, compressed). Keep it that way: no frameworks, no web fonts from other sites, WebP images under about 200KB, `width`/`height` on images.
+- Content is built by JS, so the first paint waits for the scripts. Already done: portrait and mono font are preloaded in `index.html`; `window.media(src, label, alt, eager)` marks on-screen images as high priority (case-study cover); other images are lazy; the home page prefetches the case-study page and scripts when idle (`warm` in `home.js`). When adding a case study, add its story file name to the `warm` map in `home.js`.
+- Test with throttling (Slow 4G, 4x CPU) and a server that sends brotli, not just a fast local one. Targets: first content under about 1.5s, largest image under 2.5s, no layout shift.
 
 ## Conventions
 - UI motion under 300ms, `transform` and `opacity` only, exponential ease-out, never `transition: all`, never animate from `scale(0)`.

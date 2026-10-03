@@ -1,7 +1,7 @@
 (() => {
   const S = window.SITE, H = S.hero;
   const $ = (s) => document.querySelector(s);
-  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = () => false; // reduce-motion is intentionally ignored
 
   // hero: headline rises in, a hand-drawn ring draws round one word, the portrait settles,
   // then the notes appear one at a time. The mouse moves each layer a little, by depth.
@@ -15,7 +15,7 @@
     <p class="sub fade" style="--d:.75s">${H.sub}</p>
     <p class="now fade" style="--d:.95s"><span class="tag"><i></i><span class="l">Currently at </span><b>${S.experience[0].where}</b></span></p>
     <div class="stage">
-      <div class="fig-clip"><img class="figure" src="${S.photo}" alt="Portrait of ${S.name}" onerror="this.closest('.stage').classList.add('no-photo')"></div>
+      <div class="fig-clip"><img class="figure" fetchpriority="high" decoding="async" src="${S.photo}" alt="Portrait of ${S.name}" onerror="this.closest('.stage').classList.add('no-photo')"></div>
       <span class="fig-note" aria-hidden="true">${S.portraitNote}</span>
       ${notes}
     </div></div>`;
@@ -109,6 +109,16 @@
   // work cards replay each time they scroll into view, down or up
   const cardIO = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("in", e.isIntersecting)), { threshold: .12 });
   document.querySelectorAll(".pcard").forEach((el) => cardIO.observe(el));
+
+  // once the page is idle, fetch the case-study page and its scripts so opening one feels instant
+  const warm = () => {
+    const c = navigator.connection;
+    if (c && (c.saveData || /2g/.test(c.effectiveType || ""))) return;
+    ["case.html", "js/case.js", "js/lightbox.js", ...new Set(S.projects.filter((p) => !p.sample && p.story).map((p) => "js/story-" + ({ "virtual-waiter": "vw", rentzgo: "rz", nexus: "nexus" }[p.story] || p.story) + ".js"))].forEach((href) => {
+      const l = document.createElement("link"); l.rel = "prefetch"; l.href = href; document.head.appendChild(l);
+    });
+  };
+  window.requestIdleCallback ? requestIdleCallback(warm, { timeout: 4000 }) : setTimeout(warm, 2500);
 
   window.reveal();
 })();

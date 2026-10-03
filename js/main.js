@@ -3,8 +3,8 @@
   const $ = (s, r = document) => r.querySelector(s);
 
   // image or labelled placeholder slot
-  window.media = (src, label = "Image", alt = "") =>
-    src ? `<img src="${src}" alt="${alt}" loading="lazy" decoding="async">` : `<div class="ph mono">${label}</div>`;
+  window.media = (src, label = "Image", alt = "", eager = false) =>
+    src ? `<img src="${src}" alt="${alt}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : `<div class="ph mono">${label}</div>`;
 
   // reveal on scroll
   window.reveal = () => {

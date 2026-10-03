@@ -4,7 +4,7 @@
   const hero = document.querySelector("#hero");
   if (!hero) return;
   // Reduced motion: still reveal the grid under the mouse, but keep it still (no pull, no twist).
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const calm = false; // reduce-motion is intentionally ignored
 
   const cv = document.createElement("canvas");
   cv.className = "grid-cv";

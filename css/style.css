@@ -1,3 +1,4 @@
+/* Owner decision: the site ignores the device "reduce motion" setting, so every animation always plays. */
 /* Tokens. One brand colour (--accent), four project tints, one radius system:
    pills are fully round, cards and images use --r. Palette options A/B/C override tokens below. */
 :root {
@@ -121,7 +122,7 @@ nav ul li.rs .btn { background: var(--bg); }
   .rs:hover .stk i, .rs:focus-within .stk i { opacity: 1; transform: rotate(calc((var(--k) - 1.5) * 6deg)); }
 }
 @media (hover: none), (max-width: 860px) { .meet, .stk-cap { display: none; } }
-@media (prefers-reduced-motion: reduce) { .logo .fr, .logo .cur, .meet, .stk i, .stk-cap { transition: none; } }
+
 
 /* hero: kicker, headline with a hand-drawn ring, sub, text link, then the portrait with notes */
 .hero { position: relative; isolation: isolate; background: var(--hero-bg); text-align: center; padding-top: clamp(40px, 7vh, 72px); overflow: clip; --fs: clamp(38px, 6.1vw, 92px); --hw: calc(var(--fs) * 5.5); }
@@ -159,16 +160,16 @@ nav ul li.rs .btn { background: var(--bg); }
   .now .tag b { font-size: 21px; font-weight: 600; letter-spacing: -.025em; color: var(--accent); }
 }
 @media (min-width: 1241px) and (hover: hover) and (pointer: fine) { .now .tag:hover { transform: rotate(3deg) scale(1.04); } }
-@media (min-width: 1241px) and (prefers-reduced-motion: reduce) { .now .tag { transition: none; } }
+
 .hero .sub { text-wrap: balance; max-width: 46ch; margin: 28px auto 0; color: var(--muted); font-size: clamp(17px, 1.6vw, 20px); }
 
 .stage { position: relative; width: min(100%, 1080px); height: clamp(300px, 26vw, 370px); margin: clamp(28px, 4vw, 48px) auto 0; }
 .fig-clip { position: absolute; left: 50%; top: 0; bottom: 0; width: min(100%, 340px); transform: translateX(-50%); overflow: hidden; -webkit-mask-image: linear-gradient(#000 66%, transparent 100%); mask-image: linear-gradient(#000 66%, transparent 100%); }
-.figure { position: absolute; left: 50%; top: 0; width: 100%; height: auto; max-width: none; transform: translate(calc(-50% + var(--fx, 0px)), var(--fy, 0px)); opacity: 0; animation: figure 1s var(--ease) 1.05s forwards; }
+.figure { position: absolute; left: 50%; top: 0; width: 100%; height: auto; max-width: none; transform: translate(calc(-50% + var(--fx, 0px)), var(--fy, 0px)); opacity: 0; animation: figure 1s var(--ease) .3s forwards; }
 .fig-note { position: absolute; right: calc(50% + 150px); top: 16%; width: 11em; text-align: right; font-size: 14px; line-height: 1.3; color: var(--muted); opacity: 0; transform: translateY(-4px); transition: opacity .15s var(--ease), transform .2s var(--ease); pointer-events: none; z-index: 2; }
 @media (hover: hover) and (pointer: fine) { .fig-clip:hover + .fig-note { opacity: 1; transform: none; } }
 @media (hover: none) { .fig-note { display: none; } }
-@media (prefers-reduced-motion: reduce) { .fig-note { transition: none; } }
+
 .stage.no-photo .figure { display: none; }
 .stage.no-photo::after { content: "Add your portrait at assets/priya.webp"; position: absolute; left: 50%; top: 40%; transform: translateX(-50%); font: 13px var(--mono); color: var(--faint); border: 1px dashed var(--line); border-radius: var(--r); padding: 40px 30px; }
 
@@ -248,7 +249,7 @@ nav ul li.rs .btn { background: var(--bg); }
 .xp .xmeta .mono { display: block; margin-top: 2px; font-variant-numeric: tabular-nums; }
 @media (hover: hover) and (pointer: fine) { .xp li:hover::before { opacity: 1; } }
 @media (max-width: 860px) { .xp li { grid-template-columns: minmax(0, 1fr); padding: 18px 12px; } .xp .xmeta { text-align: left; } }
-@media (prefers-reduced-motion: reduce) { .xp li::before { transition: none; } }
+
 
 /* footer: a cobalt panel; one word of the headline cycles */
 footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
@@ -260,8 +261,8 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 .cyc { display: inline-grid; vertical-align: top; }
 .cw { grid-area: 1 / 1; opacity: 0; }
 .cw.is { opacity: 1; }
-.cw.in { animation: wIn .75s var(--ease) forwards; }
-.cw.out { animation: wOut .6s var(--ease) forwards; }
+.cw.in { animation: wIn .55s var(--ease) forwards; }
+.cw.out { animation: wOut .45s var(--ease) forwards; }
 @keyframes wIn { from { opacity: 0; transform: translateY(.3em); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
 @keyframes wOut { from { opacity: 1; transform: none; filter: blur(0); } to { opacity: 0; transform: translateY(-.3em); filter: blur(8px); } }
 .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 32px; margin-top: auto; padding-top: 32px; }
@@ -337,28 +338,12 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 }
 
 /* Reduced motion: no movement, but state changes still read (flip becomes a quick crossfade). */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .hero h1 .w > span { animation: none; transform: none; }
-  .fade { animation: none; opacity: 1; transform: none; }
-  .ring-svg path { animation: none; stroke-dashoffset: 0; }
-  .ring-svg { animation: none; }
-  .sel-fr, .cur2 { transition: none; }
-  .figure { animation: none; opacity: 1; }
-  .hnote .pop { animation: none; opacity: 1; transform: none; }
-  .hnote .bob { animation: none; }
-  .rv { opacity: 1; transform: none; transition: none; }
-  .btn { transition: none; }
-  .xp li::before { clip-path: inset(0); opacity: 0; transition: opacity .2s; }
-  .xp li:hover::before, .xp li:focus-within::before { opacity: 1; }
-  .pc-img img, .more { transition: none; transform: none; }
-  .pcard:hover .more, .pcard:focus-visible .more { opacity: 1; }
-}
+
 
 /* Page transitions between home and a case study (hosted sites, Chrome and Safari). Cover images morph. */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
-@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
 
 /* tools: quiet logos, grey at rest */
 .tool svg { width: 18px; height: 18px; fill: var(--faint); flex: none; transition: fill .25s; }
@@ -369,12 +354,12 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 
 /* scroll-driven effects (Chrome, Edge, Safari 26). Elsewhere everything simply stays visible. */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
+  @media all {
     .about-text .wd { display: inline-block; opacity: .2; animation: lit linear both; animation-timeline: view(); animation-range: entry 12% cover 38%; }
     @keyframes lit { to { opacity: 1; } }
     .panel { animation: panel linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
     @keyframes panel { from { scale: .94; opacity: .5; } to { scale: 1; opacity: 1; } }
-    .figure { animation: figure 1.3s var(--ease) 1.05s forwards, drift-f linear both; animation-timeline: auto, scroll(root); animation-range: normal, 0 100vh; }
+    .figure { animation: figure 1.3s var(--ease) .3s forwards, drift-f linear both; animation-timeline: auto, scroll(root); animation-range: normal, 0 100vh; }
     .hnote { animation: drift-n linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
     @keyframes drift-f { to { translate: 0 30px; } }
     @keyframes drift-n { to { translate: 0 var(--sp, -30px); } }
@@ -470,7 +455,7 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 /* reading progress on long case studies (scroll-driven, Chrome/Edge/Safari 26; hidden elsewhere) */
 .cs-progress { display: none; }
 @supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
+  @media all {
     .cs-progress { display: block; position: fixed; left: 0; top: 0; z-index: 30; width: 100%; height: 3px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); animation: cs-prog linear both; animation-timeline: scroll(root); }
     @keyframes cs-prog { to { transform: scaleX(1); } }
   }
@@ -482,14 +467,14 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 .panbox img { display: block; width: 100%; height: auto; border: 0; border-radius: 0; background: transparent; }
 @media (max-width: 600px) { .panbox { aspect-ratio: var(--arm, 0.8); } }
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
+  @media all {
     .panbox img { animation: pan-d linear both; animation-timeline: --panbox; animation-range: cover 18% cover 82%; }
     @keyframes pan-d { from { transform: translateY(0); } to { transform: translateY(var(--pan-d)); } }
     @media (max-width: 600px) { .panbox img { animation-name: pan-m; } @keyframes pan-m { from { transform: translateY(0); } to { transform: translateY(var(--pan-m)); } } }
   }
 }
 @supports not (animation-timeline: view()) { .panbox { overflow-y: auto; } }
-@media (prefers-reduced-motion: reduce) { .panbox { overflow-y: auto; } }
+
 
 .sduo { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 28px; align-items: start; margin-top: 40px; }
 .sduo .sfig { margin-top: 0; max-width: none; }
@@ -515,7 +500,7 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
 .lb-body img { display: block; max-width: 100%; height: auto; }
 body:has(dialog[open]) { overflow: hidden; }
 @media (max-width: 600px) { .lb { width: 100vw; height: 100dvh; border-radius: 0; } .lb-new { display: none; } .lb-bar { padding-left: 16px; } .lb-body { padding: 10px; } }
-@media (prefers-reduced-motion: reduce) { .lb[open] { animation: none; } .zoom span { transition: none; } }
+
 
 /* closing block of a case study */
 .closer { padding-block: clamp(56px, 8vw, 112px); border-top: 1px solid var(--line); }
@@ -528,7 +513,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .nc-img img, .nc-img .ph { width: 100%; height: 100%; object-fit: cover; }
 @media (hover: hover) and (pointer: fine) { .nextcard:hover { transform: translateY(-3px); box-shadow: var(--shadow); } .nextcard:hover b { color: var(--accent); } }
 @media (max-width: 700px) { .nextcard { grid-template-columns: minmax(0, 1fr); padding: 22px; } }
-@media (prefers-reduced-motion: reduce) { .nextcard { transition: none; } }
+
 
 /* site pointer: a small circle that inverts against the page. Over key elements, a label replaces it. */
 @media (hover: hover) and (pointer: fine) {
@@ -541,7 +526,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .pt-d.off { scale: .4; opacity: 0; }
 .pt-l { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; padding: 11px 20px; border-radius: 99px; background: var(--ink); color: var(--on-ink); font: 500 15px/1 var(--sans); white-space: nowrap; box-shadow: 0 10px 30px rgb(var(--ink-rgb) / .28); translate: calc(var(--x, 0px) - 50%) calc(var(--y, 0px) - 50%); opacity: 0; scale: .85; transition: opacity .15s var(--ease), scale .2s var(--ease); }
 .pt-l.on { opacity: 1; scale: 1; }
-@media (prefers-reduced-motion: reduce) { .pt-d, .pt-l { transition: none; } }
+
 
 /* wide story sections, galleries, balanced pairs */
 .ss.wide .sb { max-width: none; }
@@ -576,7 +561,14 @@ body:has(dialog[open]) { overflow: hidden; }
 .tl-head.swap .tl-cap { animation-delay: .06s; }
 @keyframes tlIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .tl-knob { position: absolute; left: 0; top: 0; z-index: 4; width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; cursor: grab; touch-action: none; user-select: none; will-change: transform; box-shadow: 0 6px 16px -4px rgb(44 68 255 / .5); }
-.tl-knob span { font-size: 22px; line-height: 1; letter-spacing: -.1em; padding-bottom: 3px; }
+.tl-knob .kn { position: relative; display: block; width: 22px; height: 12px; }
+.tl-knob .kn::before, .tl-knob .kn::after { content: ""; position: absolute; top: 50%; width: 7px; height: 7px; border: 0 solid currentColor; }
+.tl-knob .kn::before { left: 2px; border-width: 0 0 2px 2px; transform: translateY(-50%) rotate(45deg); }
+.tl-knob .kn::after { right: 2px; border-width: 2px 2px 0 0; transform: translateY(-50%) rotate(45deg); }
+.tl-knob .kn.up { width: 12px; height: 22px; }
+.tl-knob .kn.up::before, .tl-knob .kn.up::after { top: auto; left: 50%; right: auto; }
+.tl-knob .kn.up::before { top: 2px; border-width: 2px 0 0 2px; transform: translateX(-50%) rotate(45deg); }
+.tl-knob .kn.up::after { bottom: 2px; border-width: 0 2px 2px 0; transform: translateX(-50%) rotate(45deg); }
 .tl-knob::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; }
 .tl-knob::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--accent); animation: tlPing 1.8s ease-out infinite; }
 .tl-board.used .tl-knob::after { animation: none; opacity: 0; }
@@ -591,7 +583,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .tl-blob i { font-style: normal; font: 500 11px/1.25 var(--mono); color: var(--ink); opacity: .75; margin-top: 4px; }
 @keyframes tlPop { from { opacity: 0; scale: .9; } to { opacity: 1; scale: 1; } }
 @media (hover: hover) and (pointer: fine) { .tl-knob:hover { box-shadow: 0 8px 20px -4px rgb(44 68 255 / .6); } }
-@media (prefers-reduced-motion: reduce) { .tl-head.swap h3, .tl-head.swap .tl-role, .tl-head.swap .tl-cap, .tl-blob { animation: none; } .tl-knob::after { animation: none; opacity: 0; } }
+
 
 /* audit: tap targets, timeline hint, touch knob */
 nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items: center; min-height: 36px; }
@@ -603,7 +595,7 @@ nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items
 /* experience on phones: vertical timeline */
 #exp .xp { display: none !important; }
 .tlv { display: none; margin-top: 24px; }
-.tl-board.v { height: 520px; touch-action: pan-y; }
+.tl-board.v { height: var(--tlv-h, 520px); touch-action: pan-y; }
 .tl-board.v .tl-years li, .tl-board.v .tl-years li:first-child, .tl-board.v .tl-years li:last-child { left: 0; translate: 0 -50%; }
 .tl-board.v .tl-years li:first-child { translate: 0 0; }
 .tl-board.v .tl-years li:last-child { translate: 0 -100%; }
@@ -638,7 +630,7 @@ nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items
 @media (max-width: 860px) {
   .stage.wait .figure, .stage.wait .hnote .pop, .stage.wait .hnote .bob, .stage.wait .fig-note { animation-play-state: paused; }
 }
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   .about-text.lit-js .wd { display: inline-block; opacity: .2; transition: opacity .45s var(--ease); }
   .about-text.lit-js .wd.on { opacity: 1; }
 }
@@ -646,11 +638,12 @@ nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items
   .pcard:active .pc-img { transform: scale(.985); }
   .pc-img { transition: transform .2s var(--ease); }
   .hnote { transition: scale .15s var(--ease); } .hnote:active { scale: 1.05; }
+}
 @media (max-width: 860px) { nav ul li:nth-child(2) a { display: none; } }
 @media (max-width: 374px) { nav ul li:first-child a { display: none; } }
 
 /* slow scroll-in: work cards and the timeline line. Replays on every pass, down or up. */
-@media (prefers-reduced-motion: no-preference) {
+@media all {
   .pcard.rv { transition: opacity .9s var(--ease), transform .9s var(--ease); }
   .pcard .pc-img img { scale: 1.1; transition: transform .45s var(--ease), scale 1.3s var(--ease); }
   .pcard.in .pc-img img { scale: 1; }

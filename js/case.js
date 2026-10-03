@@ -47,7 +47,7 @@
     <a class="link mono" href="index.html#work">&larr; All work</a>
     <h1>${p.title}</h1>
     <p class="lede">${p.blurb}</p>
-    <div class="cs-cover" style="view-transition-name:cover-${p.slug}">${window.media(p.cover, "Cover image", p.coverAlt || "")}</div>
+    <div class="cs-cover" style="view-transition-name:cover-${p.slug}">${window.media(p.cover, "Cover image", p.coverAlt || "", true)}</div>
     <div class="cs-meta">${[["Role", p.role], ["Timeline", p.time], [p.collabLabel || "Collaboration", p.collab], ["Focus", p.focus]].map(([a, b]) => `<div><span class="mono">${a}</span><b>${b}</b></div>`).join("")}</div>
   </div></section>
   <section><div class="wrap overview">

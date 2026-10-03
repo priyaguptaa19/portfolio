@@ -4,7 +4,7 @@
   const eras = S.experience.slice().reverse();
   const N = eras.length;
   const wrap = host.querySelector(".wrap");
-  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = () => false; // reduce-motion is intentionally ignored
   const tints = ["var(--c-coral)", "var(--c-mint)", "var(--c-butter)", "var(--c-periwinkle)"];
   const years = [...eras.map((e) => e.when.split(" - ")[0]), "Now"];
 
@@ -15,7 +15,7 @@
       <ol class="tl-years" aria-hidden="true">${years.map((y) => `<li>${y}</li>`).join("")}</ol>
       ${eras.map((e, i) => `<button type="button" class="tl-zone" data-i="${i}" aria-label="${e.when}: ${e.role}, ${e.where}. ${e.result}"></button>`).join("")}
       <div class="tl-head" aria-hidden="true"><h3></h3><p class="tl-role mono"></p><p class="tl-cap"></p></div>
-      <div class="tl-knob" aria-hidden="true"><span>&lsaquo;&rsaquo;</span></div>
+      <div class="tl-knob" aria-hidden="true"><span class="kn"></span></div>
       <span class="tl-hint" aria-hidden="true">drag me</span>
     </div></div>`);
 
@@ -110,7 +110,7 @@
   const S = window.SITE, host = document.getElementById("exp");
   if (!host || !host.querySelector(".xp")) return;
   const eras = S.experience.slice().reverse(), N = eras.length;
-  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduced = () => false; // reduce-motion is intentionally ignored
   const years = [...eras.map((e) => e.when.split(" - ")[0]), "Now"];
   host.querySelector(".xp").insertAdjacentHTML("beforebegin", `<div class="tlv">
     <div class="tl-board v">
@@ -118,7 +118,7 @@
       <ol class="tl-years" aria-hidden="true">${years.map((y) => `<li>${y}</li>`).join("")}</ol>
       ${eras.map((e, i) => `<button type="button" class="tl-zone" data-i="${i}" aria-label="${e.when}: ${e.role}, ${e.where}. ${e.result}"></button>`).join("")}
       <div class="tl-head" aria-hidden="true"><h3></h3><p class="tl-role mono"></p><p class="tl-cap"></p></div>
-      <div class="tl-knob" aria-hidden="true"><span>&#8597;</span></div>
+      <div class="tl-knob" aria-hidden="true"><span class="kn up"></span></div>
     </div></div>`);
   const board = host.querySelector(".tlv .tl-board"), line = board.querySelector(".tl-line"), svg = board.querySelector(".tl-svg");
   const dots = [...board.querySelectorAll(".tl-dot")], yrs = [...board.querySelectorAll(".tl-years li")];
@@ -173,17 +173,29 @@
   });
   const drop = () => { if (!dragging) return; dragging = false; board.classList.remove("drag"); to(act); };
   knob.addEventListener("pointerup", drop); knob.addEventListener("pointercancel", drop);
-  let timer = 0;
   if (!reduced()) svg.classList.add("pre");
+  // the line draws in when the board first shows, and again after it has been fully off screen
   new IntersectionObserver(([en]) => {
-    if (en.intersectionRatio >= .4) {
-      if (started) return; started = true;
-      svg.classList.remove("pre");
-      timer = setTimeout(() => { if (!used) { easeV = .045; ty = mid(N - 1); setEra(N - 1); go(); } }, reduced() ? 0 : 1000);
-    } else if (en.intersectionRatio === 0 && started) {
-      started = false; used = false; clearTimeout(timer);
-      if (!reduced()) svg.classList.add("pre");
-      easeV = .16; ty = y = mid(0); act = -1; setEra(0); board.classList.remove("used"); go();
-    }
+    if (en.intersectionRatio >= .4) { if (started) return; started = true; svg.classList.remove("pre"); }
+    else if (en.intersectionRatio === 0 && started) { started = false; svg.classList.add("pre"); }
   }, { threshold: [0, .4] }).observe(board);
+
+  // page scroll drives the knob: the job under a reading line (55% down the screen) is the current one.
+  // Works the same going up. Dragging or tapping still works until the next job crosses the line.
+  const sents = zones;
+  let band = 78, sio = null;
+  const pick = () => {
+    if (!board.offsetParent || dragging) return;
+    const first = sents[0].getBoundingClientRect(), last = sents[N - 1].getBoundingClientRect();
+    let k = first.top > band ? 0 : last.bottom <= band ? N - 1 : sents.findIndex((s) => { const r = s.getBoundingClientRect(); return r.top <= band && r.bottom > band; });
+    if (k < 0) k = act < 0 ? 0 : act;
+    if (k !== act) { ty = mid(k); setEra(k); go(); }
+  };
+  const watch = () => {
+    if (sio) sio.disconnect();
+    band = Math.round(innerHeight * .55);
+    sio = new IntersectionObserver(pick, { rootMargin: `-${band}px 0px -${Math.max(0, innerHeight - band - 4)}px 0px` });
+    sents.forEach((s) => sio.observe(s));
+  };
+  watch(); addEventListener("resize", watch);
 })();
