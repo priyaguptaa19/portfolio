@@ -23,7 +23,7 @@
   const dots = [...board.querySelectorAll(".tl-dot")], yrs = [...board.querySelectorAll(".tl-years li")];
   const zones = [...board.querySelectorAll(".tl-zone")], head = board.querySelector(".tl-head"), knob = board.querySelector(".tl-knob");
   const hint = board.querySelector(".tl-hint"), blobs = board.querySelector(".tl-blobs");
-  let hw = 0, last = 0, W = 0, H = 0, base = 0, amp = 0, sig = 100, x = 0, tx = 0, act = -1, dragging = false, raf = 0, used = false, started = false;
+  let ease = .14, hw = 0, last = 0, W = 0, H = 0, base = 0, amp = 0, sig = 100, x = 0, tx = 0, act = -1, dragging = false, raf = 0, used = false, started = false;
   const mid = (i) => (i + .5) / N * W;
   const yAt = (px) => base - amp * Math.exp(-(((px - x) / sig) ** 2));
 
@@ -40,10 +40,10 @@
   };
   const tick = () => {
     const now = performance.now(), dt = Math.min(48, last ? now - last : 16.7); last = now;
-    const k = reduced() || dragging ? 1 : 1 - Math.pow(1 - .14, dt / 16.7);
+    const k = reduced() || dragging ? 1 : 1 - Math.pow(1 - ease, dt / 16.7);
     x += (tx - x) * k;
     draw();
-    raf = Math.abs(tx - x) > .3 ? requestAnimationFrame(tick) : (x = tx, last = 0, draw(), 0);
+    raf = Math.abs(tx - x) > .3 ? requestAnimationFrame(tick) : (x = tx, last = 0, ease = .14, draw(), 0);
   };
   const go = () => { if (!raf) raf = requestAnimationFrame(tick); };
 
@@ -90,10 +90,19 @@
 
   // first view: start at the first job, then glide to the current one
   measure(); setEra(0);
-  new IntersectionObserver(([en], io) => {
-    if (!en.isIntersecting || started) return; started = true; io.disconnect();
-    setTimeout(() => { if (!used) { tx = mid(N - 1); setEra(N - 1); go(); } }, reduced() ? 0 : 500);
-  }, { threshold: .5 }).observe(board);
+  let timer = 0;
+  if (!reduced()) svg.classList.add("pre");
+  new IntersectionObserver(([en]) => {
+    if (en.intersectionRatio >= .5) {
+      if (started) return; started = true;
+      svg.classList.remove("pre");
+      timer = setTimeout(() => { if (!used) { ease = .045; tx = mid(N - 1); setEra(N - 1); go(); } }, reduced() ? 0 : 1000);
+    } else if (en.intersectionRatio === 0 && started) {
+      started = false; used = false; clearTimeout(timer);
+      if (!reduced()) svg.classList.add("pre");
+      ease = .14; tx = x = mid(0); act = -1; setEra(0); board.classList.remove("used"); go();
+    }
+  }, { threshold: [0, .5] }).observe(board);
 })();
 
 // phone version: the same idea turned on its side. The line runs down, the bump bulges right.
@@ -115,7 +124,7 @@
   const dots = [...board.querySelectorAll(".tl-dot")], yrs = [...board.querySelectorAll(".tl-years li")];
   const zones = [...board.querySelectorAll(".tl-zone")], head = board.querySelector(".tl-head"), knob = board.querySelector(".tl-knob");
   const X0 = 76, AMP = 30, SIG = 64;
-  let hh = 0, lastv = 0, W = 0, H = 0, y = 0, ty = 0, act = -1, dragging = false, raf = 0, used = false, started = false;
+  let easeV = .16, hh = 0, lastv = 0, W = 0, H = 0, y = 0, ty = 0, act = -1, dragging = false, raf = 0, used = false, started = false;
   const mid = (i) => (i + .5) / N * H;
   const xAt = (py) => X0 + AMP * Math.exp(-(((py - y) / SIG) ** 2));
 
@@ -132,8 +141,8 @@
   };
   const tick = () => {
     const now = performance.now(), dt = Math.min(48, lastv ? now - lastv : 16.7); lastv = now;
-    y += (ty - y) * (reduced() || dragging ? 1 : 1 - Math.pow(1 - .16, dt / 16.7)); draw();
-    raf = Math.abs(ty - y) > .3 ? requestAnimationFrame(tick) : (y = ty, lastv = 0, draw(), 0);
+    y += (ty - y) * (reduced() || dragging ? 1 : 1 - Math.pow(1 - easeV, dt / 16.7)); draw();
+    raf = Math.abs(ty - y) > .3 ? requestAnimationFrame(tick) : (y = ty, lastv = 0, easeV = .16, draw(), 0);
   };
   const go = () => { if (!raf) raf = requestAnimationFrame(tick); };
   const setEra = (i) => {
@@ -164,8 +173,17 @@
   });
   const drop = () => { if (!dragging) return; dragging = false; board.classList.remove("drag"); to(act); };
   knob.addEventListener("pointerup", drop); knob.addEventListener("pointercancel", drop);
-  new IntersectionObserver(([en], io) => {
-    if (!en.isIntersecting || started) return; started = true; io.disconnect();
-    setTimeout(() => { if (!used) { ty = mid(N - 1); setEra(N - 1); go(); } }, reduced() ? 0 : 500);
-  }, { threshold: .4 }).observe(board);
+  let timer = 0;
+  if (!reduced()) svg.classList.add("pre");
+  new IntersectionObserver(([en]) => {
+    if (en.intersectionRatio >= .4) {
+      if (started) return; started = true;
+      svg.classList.remove("pre");
+      timer = setTimeout(() => { if (!used) { easeV = .045; ty = mid(N - 1); setEra(N - 1); go(); } }, reduced() ? 0 : 1000);
+    } else if (en.intersectionRatio === 0 && started) {
+      started = false; used = false; clearTimeout(timer);
+      if (!reduced()) svg.classList.add("pre");
+      easeV = .16; ty = y = mid(0); act = -1; setEra(0); board.classList.remove("used"); go();
+    }
+  }, { threshold: [0, .4] }).observe(board);
 })();

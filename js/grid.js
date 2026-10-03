@@ -88,14 +88,19 @@
 
   const wake = () => { if (!raf) raf = requestAnimationFrame(step); };
 
-  hero.addEventListener("pointermove", (e) => {
-    if (e.pointerType && e.pointerType !== "mouse") return;
+  const track = (e) => {
     const r = hero.getBoundingClientRect();
     ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
     if (!ptr.on) color = hexToRgb(getComputedStyle(document.documentElement).getPropertyValue("--accent") || "#2c44ff");
     ptr.on = true; wake();
-  });
+  };
+  hero.addEventListener("pointermove", track);
+  hero.addEventListener("pointerdown", track);
   hero.addEventListener("pointerleave", () => { ptr.on = false; wake(); });
+  // a finger lifts away, so let the grid fade a moment later
+  const lift = (e) => { if (e.pointerType === "touch") setTimeout(() => { ptr.on = false; wake(); }, 450); };
+  hero.addEventListener("pointerup", lift);
+  hero.addEventListener("pointercancel", lift);
 
   build();
   new ResizeObserver(build).observe(hero);

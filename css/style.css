@@ -316,7 +316,7 @@ footer { padding-block: clamp(24px, 3.5vw, 40px) 20px; }
   .hero h1 { text-wrap: balance; }
 }
 @media (max-width: 860px) {
-  nav ul a:not(.btn) { display: none; }
+  nav ul li:nth-child(2) a { display: none; }
   nav ul { gap: 8px; }
   nav ul a.btn { padding-inline: 16px; }
   .stage { height: auto; display: flex; flex-direction: column; align-items: center; gap: 16px; }
@@ -538,7 +538,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .pt-d { position: fixed; left: 0; top: 0; z-index: 96; pointer-events: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; mix-blend-mode: difference; translate: calc(var(--x, 0px) - 50%) calc(var(--y, 0px) - 50%); opacity: 0; scale: 1; transition: scale .22s var(--ease), opacity .15s var(--ease); }
 .pt-d.on { opacity: 1; }
 .pt-d.act { scale: 2.857; }
-.pt-d.off { scale: 0; }
+.pt-d.off { scale: .4; opacity: 0; }
 .pt-l { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; padding: 11px 20px; border-radius: 99px; background: var(--ink); color: var(--on-ink); font: 500 15px/1 var(--sans); white-space: nowrap; box-shadow: 0 10px 30px rgb(var(--ink-rgb) / .28); translate: calc(var(--x, 0px) - 50%) calc(var(--y, 0px) - 50%); opacity: 0; scale: .85; transition: opacity .15s var(--ease), scale .2s var(--ease); }
 .pt-l.on { opacity: 1; scale: 1; }
 @media (prefers-reduced-motion: reduce) { .pt-d, .pt-l { transition: none; } }
@@ -633,3 +633,36 @@ nav ul a:not(.btn), .cs-hero > .wrap > .link { display: inline-flex; align-items
 .tl-zone, .tl-knob, .tl-hint, .soc a.si { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .tl-zone { -webkit-tap-highlight-color: transparent; }
 #about > .wrap > h2 { margin-bottom: clamp(28px, 4vw, 48px); }
+
+/* small screens: entrances wait until seen; touch-friendly press states */
+@media (max-width: 860px) {
+  .stage.wait .figure, .stage.wait .hnote .pop, .stage.wait .hnote .bob, .stage.wait .fig-note { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .about-text.lit-js .wd { display: inline-block; opacity: .2; transition: opacity .45s var(--ease); }
+  .about-text.lit-js .wd.on { opacity: 1; }
+}
+@media (hover: none) {
+  .pcard:active .pc-img { transform: scale(.985); }
+  .pc-img { transition: transform .2s var(--ease); }
+  .hnote { transition: scale .15s var(--ease); } .hnote:active { scale: 1.05; }
+@media (max-width: 860px) { nav ul li:nth-child(2) a { display: none; } }
+@media (max-width: 374px) { nav ul li:first-child a { display: none; } }
+
+/* slow scroll-in: work cards and the timeline line. Replays on every pass, down or up. */
+@media (prefers-reduced-motion: no-preference) {
+  .pcard.rv { transition: opacity .9s var(--ease), transform .9s var(--ease); }
+  .pcard .pc-img img { scale: 1.1; transition: transform .45s var(--ease), scale 1.3s var(--ease); }
+  .pcard.in .pc-img img { scale: 1; }
+  .pcard .pc-meta { opacity: 0; translate: 0 14px; transition: opacity .9s var(--ease) .25s, translate .9s var(--ease) .25s; }
+  .pcard.in .pc-meta { opacity: 1; translate: none; }
+
+  .tl-svg { clip-path: inset(-12px); transition: clip-path 1.4s var(--ease-io); }
+  .tl-svg.pre { clip-path: inset(-12px 100% -12px -12px); transition: none; }
+  .tlv .tl-svg.pre { clip-path: inset(-12px -12px 100% -12px); }
+
+  ::view-transition-old(root) { animation: vtOut .2s var(--ease) both; }
+  ::view-transition-new(root) { animation: vtIn .4s var(--ease) both; }
+  @keyframes vtOut { to { opacity: 0; } }
+  @keyframes vtIn { from { opacity: 0; transform: translateY(14px); } }
+}

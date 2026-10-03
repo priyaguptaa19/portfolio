@@ -1,11 +1,11 @@
-// MMCG 3.0 case study. [[double brackets]] mark the highlighted words.
+// Nexus case study. [[double brackets]] mark the highlighted words.
 window.STORIES = window.STORIES || {};
-window.STORIES["mmcg"] = {
-  base: "assets/projects/mmcg/",
+window.STORIES["nexus"] = {
+  base: "assets/projects/nexus/",
   wide: true,
   dims: {"s0.webp":[1440,1024],"s1.webp":[1440,1024],"s2.webp":[1440,1024],"s3.webp":[1440,1182],"s4.webp":[1440,1223],"s7.webp":[1440,1182],"s8.webp":[1440,1223]},
   summary: {
-    outcome: "An AI research workspace designed as [[a system]], not a chatbot: persona, data, agents, task and output in one loop.",
+    outcome: "A research system that turns questions into evidence, execution and actionable insights, while keeping the [[researcher in control]].",
     problem: "Research is messy. Everything the researcher needed already existed, but the relationship between the pieces didn’t.",
     approach: "I designed the thinking first: one research loop, four moments, and states for waiting, failing and reviewing. Then the screens followed.",
   },
@@ -13,7 +13,7 @@ window.STORIES["mmcg"] = {
     {
       id: "start", n: "01", label: "The starting point", note: "Everything existed. The relationship didn’t.",
       h: "Six things. One system. [[Not another dashboard.]]",
-      lede: "MMCG 3.0 was not a screen-design problem. It was a thinking-system problem.",
+      lede: "Nexus was not a screen-design problem. It was a thinking-system problem.",
       blocks: [
         { t: "cards", cols: 3, items: [
           ["01", "Persona", "who are we learning for?"],

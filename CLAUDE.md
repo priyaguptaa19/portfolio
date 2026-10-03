@@ -1,8 +1,54 @@
 # Priya Gupta portfolio: guide for AI agents
 
-Static portfolio site for Priya Gupta, Senior Product Designer (3+ years). Plain HTML, CSS and JS. No framework, no build step, no package manager. Open `index.html` in a browser, or serve the folder with any static server.
+Static portfolio site for Priya Gupta, Product Designer (3+ years). Plain HTML, CSS and JS. No framework, no build step, no package manager. Open `index.html` in a browser, or serve the folder with any static server.
 
 Goal: appeal to senior designers and HR. Look: minimal, modern, playful, light only, one cobalt accent, premium motion. Avoid "AI-slop" patterns.
+
+## Who this is for and the voice
+- Audience: senior designers and hiring managers (HR) scanning fast. Make Priya look capable, clear and a little playful. Never generic or "AI-made".
+- Voice: plain, confident, human. Short sentences. Concrete verbs ("cut", "built", "designed"), not hype ("seamless", "unleash", "elevate"). No em-dashes or en-dashes anywhere (use a comma, full stop or hyphen).
+- Facts about Priya (use only these, never invent numbers or employers): Product Designer (not "Senior"), 3+ years. Jobs: Magnumsoft Engineering (Jul 2025 to now), I Dont Blabber (Jan to Jun 2025), Parshi Technologies (2024), CAD Desk (2023). Studied electrical engineering before design. Works on multi-role SaaS, fintech/insurance, mobile and enterprise products; design systems in Figma; research, usability testing, WCAG 2.1 AA; AI-assisted workflow. Proven numbers already on the site: 9 steps cut to 4, stockouts down 62% (pilot), RentzGo booking steps down 30%. If a new claim or number is needed, ask the owner, do not make it up.
+- No city names. No link to her old portfolio.
+
+## Decisions already made (do not reverse unless asked)
+- Light only, no dark mode. Warm off-white background, one cobalt accent. Impeccable and taste-skill flag the cream background and Geist font; both are deliberate.
+- Custom cursor on mouse devices (a small dot that changes with the background, plus labels). Chosen on purpose even though a style rulebook discourages it.
+- Case studies are story pages built from `story-*.js` blocks, not separate hand-made pages. New case studies must use the same template so styling stays consistent.
+- Home work grid shows large covers (not a card fan) so images have detail. Placeholder projects stay hidden.
+- Section numbers in case studies and "#001" card numbers are intentional.
+- Footer socials are icon-only with a hover label. Resume lives in the top nav only.
+- Experience is an interactive timeline (desktop horizontal, phone vertical), adapted from Sneha's site.
+
+## How to handle a request (playbook)
+1. Find where the thing lives: text in `js/content.js` or a `js/story-*.js` file; look in "Text that is NOT in content.js" if not found; styles in `css/style.css`.
+2. Make the smallest change that does it. Do not refactor or redesign unasked.
+3. Keep every rule in "Conventions" (motion limits, contrast, no emoji icons, tap targets, hover gating, reduced motion).
+4. Reuse existing blocks, classes and tokens. Add a new CSS value only if no token fits, and put it at the end of the right section.
+5. Verify (see below), then tell the owner in plain words what changed and which file.
+6. If the request is vague, conflicts with a decision above, or needs a fact you do not have, ask one short question first.
+
+## Common requests and what to touch
+| Request | Do this |
+| --- | --- |
+| Change any wording | `js/content.js` or the story file. Keep length similar so layout does not break. |
+| New case study | "Adding a case study" below. Convert images to WebP, set `dims`, write alt text. |
+| New project card only | Entry in `SITE.projects` (set `sample: true` to hide). |
+| Change colours | Edit tokens in `:root` only. Keep one accent. Check text contrast 4.5:1. |
+| Change fonts | Add woff2 to `assets/fonts`, update `css/fonts.css` and `--sans`. Self-host, no Google link. |
+| Add a section to home | Add an element in `index.html`, render it in `home.js`, style in `style.css`, add to the nav spy list in `home.js`. |
+| Update resume | Replace `assets/Priya_Gupta_Resume.pdf` (same name). Update experience entries and the `<noscript>` text. |
+| Change contact details | `content.js` (email, mailHref, phone, phoneHref, links) and the `<noscript>` block in both HTML files. |
+| Add a social link | Add `{ label, icon, href }` to `SITE.links`; add the icon path to `js/icons.js` (Simple Icons paths only). |
+| Make it faster or lighter | Compress images (WebP, under about 300KB each), keep `width`/`height` on images. |
+
+## Before you say it is done (checklist)
+- Open `index.html` and each `case.html?p=` page (virtual-waiter, rentzgo, nexus). No console errors, no sideways scroll at 390px and 1440px wide.
+- All images load. Every image has alt text. Links work.
+- Motion respects `prefers-reduced-motion`; hover rules stay inside the hover media query.
+- Text has no em-dashes, no invented numbers, no filler words.
+- Nothing from `refs/` was copied in.
+- Update `README.md` if a new editable field or file was added.
+- Do not commit or push unless asked; offer a commit message instead.
 
 ## Rules for the user's workflow
 - Do not `git commit` or `git push` unless the user explicitly asks.
@@ -20,7 +66,7 @@ css/fonts.css         @font-face for local fonts
 js/content.js         ALL editable content: window.SITE (name, links, hero, about, tools, experience, projects)
 js/story-vw.js        Virtual Waiter story  -> window.STORIES["virtual-waiter"]
 js/story-rz.js        RentzGo story         -> window.STORIES["rentzgo"]
-js/story-mm.js        MMCG 3.0 story        -> window.STORIES["mmcg"]
+js/story-nexus.js     Nexus story           -> window.STORIES["nexus"]
 js/icons.js           window.ICONS: Simple Icons paths (figma, framer, adobephotoshop, canva, linkedin, behance)
 js/main.js            window.media(), window.reveal(), nav HTML, footer panel HTML
 js/home.js            hero, nav spy, work grid, about, experience list
@@ -34,7 +80,7 @@ assets/               priya.webp, resume PDF, fonts/, projects/<slug>/*.webp
 assets/source/        original images (gitignored)
 refs/                 reference sites and exports (gitignored, never edit or ship)
 ```
-Script order matters. index.html: content, icons, main, home, timeline, grid, fx, cursor-label. case.html: content, story-vw, story-rz, story-mm, icons, main, case, lightbox, fx, cursor-label. `icons.js` must load before `main.js` (footer uses ICONS).
+Script order matters. index.html: content, icons, main, home, timeline, grid, fx, cursor-label. case.html: content, story-vw, story-rz, story-nexus, icons, main, case, lightbox, fx, cursor-label. `icons.js` must load before `main.js` (footer uses ICONS).
 
 ## Design tokens (css/style.css `:root`)
 - Colours: `--bg #f6f5f0`, `--surface #fcfbf7`, `--ink #12162b`, `--muted #566079`, `--faint #666c82`, `--line` (ink at 12%), single accent `--accent #2c44ff`, `--on-accent #f6f5f0`. Tints for project cards: `--c-coral #ff8a6b`, `--c-mint #7fd8a9`, `--c-butter #f5d658`, `--c-periwinkle #9aa5ff`. Light only.
@@ -48,7 +94,18 @@ Script order matters. index.html: content, icons, main, home, timeline, grid, fx
 - `story: "<key>"` renders `STORIES[key]` through case.js. `href` overrides the card link (external page). `sample:true` hides placeholder projects unless `SITE.showSamples` is true.
 - `SITE.experience[]`: `when, role, where, result, stats` (stats = `[[big, small], ...]` bubbles on the timeline). Listed newest first; timeline reverses it.
 - `SITE.links[]`: `label, href, icon` (icon key in ICONS). `mailHref` is a plain `mailto:` (no subject or body).
+- Footer headline = `Let’s <SITE.cycle word> <SITE.footerLine>`. `SITE.available` toggles the footer availability line (`availableNote` is unused). `SITE.work` = title and hint above the work grid.
 - Highlight syntax in text: `[[words]]` becomes the accent highlight (stories) and `{t, tone:"hl"}` segments (about).
+
+## Text that is NOT in content.js (change it in these files too)
+- Page title, meta description, Open Graph tags and favicon: top of `index.html` and `case.html`.
+- `<noscript>` fallback with name, email, resume and social links: `index.html` line ~20 and `case.html` line ~16 (hard-coded; update when contact details change).
+- Per-case-study meta description and title: built in `case.js` from the project blurb and story summary.
+- Nav labels (Work, About, Resume, Contact) and footer labels (Email, Call, Elsewhere): `js/main.js`.
+- Experience timeline labels ("drag me") and cursor labels ("Open project", "View image"): `js/timeline.js`, `js/cursor-label.js`, `data-cl` attributes.
+
+## Working with a non-coder owner
+The site owner may not code. Edit `js/content.js` and the `story-*.js` files first, keep changes small, and explain what changed in plain words. `README.md` is the owner-facing how-to; keep it in step with any change to where text lives (for example, a new field in `content.js` needs a row in README section 3).
 
 ## Adding a case study
 1. Put WebP images in `assets/projects/<slug>/` (cover + figures).
@@ -58,10 +115,12 @@ Script order matters. index.html: content, icons, main, home, timeline, grid, fx
 Block types (case.js `renderBlock`): `p, lead, h3, note, eyebrow, img, gallery, duo, duo2, flow, big, versus, keepcut, pair, model, cards (cols 2/3/4, dark, stat), steps, instead, state`. `img` takes `src, alt, cap, pan`. `dims` maps file name to `[w,h]` to avoid layout shift. Every image needs real alt text. Cards: `[kicker, heading, text]`.
 
 ## UI behaviours to preserve
-- Hero: word-rise headline, ring around "never", portrait, handwritten notes with pointer parallax.
+- Hero: word-rise headline (`hero.headline` = `l1`, `before`, `circle`, `after`), hand-drawn ring round the `circle` word (hover shows a selection frame and a "Priya" cursor tag), portrait, handwritten notes with pointer parallax, "Currently at" status.
+- Section titles: Work (`SITE.work.title`), About (visible h2), Experience.
 - Work: `.pgrid` of large covers. First card is featured unless exactly 2 projects. Hover shows the metric, click opens the story.
 - Experience: draggable knob on a line with one bump; zones per job; stat bubbles; hint "drag me". Under 760px width a vertical version (`.tlv`) replaces it. The old `.xp` list stays in the DOM but is hidden.
 - Footer: cobalt `.panel`, cycling headline word, email, phone, round icon-only social buttons with hover tooltip.
+- Scroll-in motion (IntersectionObserver, off under reduced motion): work cards replay on every pass, down or up (image settles slowly, title follows); the experience timeline redraws its line and glides the knob each time it scrolls into view and resets when fully off screen; page-to-page slide on the hosted site. Only these three; do not add more without asking.
 - Cursor: custom dot (mix-blend-mode difference) with label; only on mouse devices.
 - Hover rules are gated by `@media (hover: hover) and (pointer: fine)`. `prefers-reduced-motion` turns movement off. Keep both when adding styles.
 
@@ -91,7 +150,7 @@ Saved copies in `refs/` (gitignored, reference only, never ship or copy their co
 - Sneha: "sneha's (kinda) organised chaos" (playful personal site). Source of the experience timeline idea (draggable knob, bump in the line, floating bubbles) and of how work cards are displayed.
 - Rayna Lai: UI/UX designer site, saved pages: home, about, projects, play, plus case studies Electronic Arts internship, Glint (mobile app) and Pangea (mobile app). Source of the cobalt-style accent and the case-study story layout.
 - Jennifer Huang: hfyj-art.com / "Jennifer Huang, HFYJ". Source of the custom cursor that changes (replaces the system pointer) and the #001 project numbering.
-Content, not inspiration: `refs/mmcg.html` (original MMCG page, now rebuilt as `js/story-mm.js`) and `refs/rentzo-images/` (RentzGo exports).
+Content, not inspiration: `refs/mmcg.html` (original page for this project, now rebuilt as `js/story-nexus.js`) and `refs/rentzo-images/` (RentzGo exports).
 I only know the exact URLs for avni.design, designerelo.com and hfyj-art.com; the others were saved as files.
 
 ## Known gaps

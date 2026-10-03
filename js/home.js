@@ -11,7 +11,7 @@
   const notes = S.notes.map((n, k) => `<div class="hnote" data-depth="${n.depth}" style="left:${n.x}%;top:${n.y}%;--rot:${n.rot}deg;--sp:${(-n.depth * 46).toFixed(0)}px;--d:${(1.6 + k * .22).toFixed(2)}s"><div class="pop"><div class="bob" style="--b:${6 + k * 1.3}s"><span>${n.t}</span></div></div></div>`).join("");
   $("#hero").innerHTML = `<div class="wrap">
     <p class="kicker fade">${H.tag}</p>
-    <h1>${wd(hl.l1)}<br>${wd(hl.before)} <span class="ring"><span class="w"><span style="--i:${i++}">${hl.circle}</span></span><svg class="ring-svg" viewBox="0 0 220 110" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M112 8C160 4 212 22 210 56C208 92 150 104 104 102C52 100 8 84 10 52C12 22 62 8 118 12"/></svg><i class="sel-fr" aria-hidden="true"><b></b><b></b><b></b><b></b></i><span class="cur2" aria-hidden="true"><svg viewBox="0 0 16 22" width="16" height="22"><path d="M1.5 1.5v15.2l4-3.6 3 7 2.6-1.2-3-6.8h5.4z" fill="currentColor" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><span>${S.first}</span></span></span> ${wd(hl.after)}</h1>
+    <h1>${wd(hl.l1)} <br>${wd(hl.before)} <span class="ring"><span class="w"><span style="--i:${i++}">${hl.circle}</span></span><svg class="ring-svg" viewBox="0 0 220 110" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M112 8C160 4 212 22 210 56C208 92 150 104 104 102C52 100 8 84 10 52C12 22 62 8 118 12"/></svg><i class="sel-fr" aria-hidden="true"><b></b><b></b><b></b><b></b></i><span class="cur2" aria-hidden="true"><svg viewBox="0 0 16 22" width="16" height="22"><path d="M1.5 1.5v15.2l4-3.6 3 7 2.6-1.2-3-6.8h5.4z" fill="currentColor" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><span>${S.first}</span></span></span> ${wd(hl.after)}</h1>
     <p class="sub fade" style="--d:.75s">${H.sub}</p>
     <p class="now fade" style="--d:.95s"><span class="tag"><i></i><span class="l">Currently at </span><b>${S.experience[0].where}</b></span></p>
     <div class="stage">
@@ -19,6 +19,13 @@
       <span class="fig-note" aria-hidden="true">${S.portraitNote}</span>
       ${notes}
     </div></div>`;
+
+  // small screens: the portrait and notes sit below the fold, so hold their entrance until they are seen
+  const stage = $(".stage");
+  if (stage && matchMedia("(max-width: 860px)").matches && !reduced()) {
+    stage.classList.add("wait");
+    new IntersectionObserver(([e], io) => { if (e.isIntersecting) { stage.classList.remove("wait"); io.disconnect(); } }, { threshold: .2 }).observe(stage);
+  }
 
   // pointer parallax: figure and notes drift opposite ways, each note by its own depth
   const hero = $("#hero");
@@ -87,9 +94,21 @@
       <div class="about-text">${S.about.map((p) => `<p>${seg(p)}</p>`).join("")}</div></div>
     <div class="toolkit"><span class="mono">Toolkit</span><ul>${S.tools.map((x) => `<li class="tool" style="--c:${x.hex}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${(window.ICONS || {})[x.icon] || ""}"/></svg><span>${x.n}</span></li>`).join("")}</ul></div></div></div>`;
 
+  // browsers without scroll-driven animation: light the about words as they scroll into view
+  if (!reduced() && !(window.CSS && CSS.supports && CSS.supports("animation-timeline", "view()"))) {
+    const words = [...document.querySelectorAll(".about-text .wd")];
+    document.querySelector(".about-text").classList.add("lit-js");
+    const wio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("on"); wio.unobserve(e.target); } }), { rootMargin: "0px 0px -12% 0px" });
+    words.forEach((w, i) => { w.style.transitionDelay = (i % 14) * 25 + "ms"; wio.observe(w); });
+  }
+
   // experience
   $("#exp").innerHTML = `<div class="wrap"><h2>Experience</h2>
     <ul class="xp">${S.experience.map((x) => `<li><h3>${x.where}</h3><p class="res">${x.result}</p><div class="xmeta"><b>${x.role}</b><span class="mono">${x.when}</span></div></li>`).join("")}</ul></div>`;
+
+  // work cards replay each time they scroll into view, down or up
+  const cardIO = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("in", e.isIntersecting)), { threshold: .12 });
+  document.querySelectorAll(".pcard").forEach((el) => cardIO.observe(el));
 
   window.reveal();
 })();

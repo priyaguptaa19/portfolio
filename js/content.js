@@ -3,7 +3,7 @@
 window.SITE = {
   name: "Priya Gupta",
   first: "Priya",
-  role: "Senior Product Designer",
+  role: "Product Designer",
   email: "priyagupta0419@gmail.com",
   mailHref: "mailto:priyagupta0419@gmail.com",
   phone: "+91 81693 18881",
@@ -21,7 +21,7 @@ window.SITE = {
   photo: "assets/priya.webp",
   portraitNote: "Thinking about moving pixels…",
   hero: {
-    tag: "Senior Product Designer",
+    tag: "Product Designer",
     headline: { l1: "I design products", before: "people", circle: "never", after: "think about." },
     sub: "3+ years shipping SaaS, fintech and mobile products. Research‑led, systems‑minded, and fast with AI\u2011assisted design.",
   },
@@ -31,7 +31,8 @@ window.SITE = {
     { t: "Order flow cut from 9 steps to 4", x: 70, y: 12, rot: 4, depth: 0.6 },
     { t: "Stockouts down 62% in pilot testing", x: 68, y: 56, rot: -4, depth: 0.8 },
   ],
-  cycle: ["research", "design", "test", "ship"],
+  cycle: ["research", "design", "test", "ship"], // footer reads: Let’s <one of these> + footerLine
+  footerLine: "something incredible together.",
   showSamples: false, // set true to also show the placeholder projects
   work: { title: "Work", hint: "Select a project to read the story." },
   photoAbout: "assets/priya.webp",
@@ -105,13 +106,13 @@ window.SITE = {
       focus: "Research, IA, flows, UI, design system",
     },
     {
-      slug: "mmcg",
-      story: "mmcg",
-      title: "MMCG 3.0",
-      type: "AI research workspace",
-      blurb: "Research is messy. The interface shouldn\u2019t be.",
-      cover: "assets/projects/mmcg/cover.webp",
-      coverAlt: "Three screens of the MMCG research workspace: the entry screen, workflow configuration and the review output",
+      slug: "nexus",
+      story: "nexus",
+      title: "Nexus",
+      type: "AI research workspace, product design",
+      blurb: "An AI research workspace connecting context, data, agents and human judgement.",
+      cover: "assets/projects/nexus/cover.webp",
+      coverAlt: "Three screens of the Nexus research workspace: the entry screen, workflow configuration and the review output",
       metric: "8 modes",
       metricShort: "one research engine",
       metricLabel: "Eight ways to think, one product grammar",
