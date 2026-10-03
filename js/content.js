@@ -34,7 +34,7 @@ window.SITE = {
   cycle: ["research", "design", "test", "ship"], // footer reads: Let’s <one of these> + footerLine
   footerLine: "something incredible together.",
   showSamples: false, // set true to also show the placeholder projects
-  work: { title: "Work", hint: "Select a project to read the story." },
+  work: { title: "Work" },
   photoAbout: "assets/priya.webp",
   about: [
     [

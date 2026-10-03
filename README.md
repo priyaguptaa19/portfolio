@@ -42,7 +42,7 @@ Open `js/content.js` in any text editor (Notepad works, VS Code is better). Chan
 | The three handwritten notes next to the photo | `notes:` | change the `t:` text |
 | "Open to product design roles" line in the footer | `available:` | `true` shows it, `false` shows "Not available right now" |
 | Footer headline | `cycle:` and `footerLine:` | it reads "Let's [word] + footerLine". The words in `cycle` rotate. |
-| Work section title | `work:` | `title:` and `hint:` |
+| Work section title | `work:` | `title:` |
 | About paragraphs | `about:` | Wrap a phrase in its own `{ t: "…", tone: "hl" }` to highlight it in blue |
 | The three quick facts under About | `proof:` | each is `["bold start", "rest of the sentence"]` |
 | Toolkit chips | `tools:` | add or remove a line like `{ n: "Figma", icon: "figma", hex: "#F24E1E" }` |

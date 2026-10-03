@@ -73,7 +73,6 @@
   // work grid: large covers. Hover shows the result, click opens the case study. Grows with the project count.
   const deck = $("#deck");
   $("#work-title").textContent = S.work.title;
-  $("#work-hint").textContent = S.work.hint;
   const list = S.projects.filter((p) => S.showSamples || !p.sample);
   deck.classList.toggle("one", list.length === 1);
   deck.classList.toggle("two", list.length === 2);

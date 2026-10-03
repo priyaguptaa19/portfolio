@@ -97,7 +97,7 @@ Script order matters. index.html: content, icons, main, home, timeline, grid, fx
 - `story: "<key>"` renders `STORIES[key]` through case.js. `href` overrides the card link (external page). `sample:true` hides placeholder projects unless `SITE.showSamples` is true.
 - `SITE.experience[]`: `when, role, where, result, stats` (stats = `[[big, small], ...]` bubbles on the timeline). Listed newest first; timeline reverses it.
 - `SITE.links[]`: `label, href, icon` (icon key in ICONS). `mailHref` is a plain `mailto:` (no subject or body).
-- Footer headline = `Let’s <SITE.cycle word> <SITE.footerLine>`. `SITE.available` toggles the footer availability line (`availableNote` is unused). `SITE.work` = title and hint above the work grid.
+- Footer headline = `Let’s <SITE.cycle word> <SITE.footerLine>`. `SITE.available` toggles the footer availability line (`availableNote` is unused). `SITE.work` = title above the work grid.
 - Highlight syntax in text: `[[words]]` becomes the accent highlight (stories) and `{t, tone:"hl"}` segments (about).
 
 ## Text that is NOT in content.js (change it in these files too)
