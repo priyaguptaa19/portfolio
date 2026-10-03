@@ -73,6 +73,7 @@ js/icons.js           window.ICONS: Simple Icons paths (figma, framer, adobephot
 js/main.js            window.media(), window.reveal(), nav HTML, footer panel HTML
 js/home.js            hero, nav spy, work grid, about, experience list
 js/timeline.js        experience timeline (desktop horizontal + phone vertical)
+js/interact.js        case-study before/after slider (.scmp)
 js/case.js            case-study renderer (reads SITE.projects + STORIES)
 js/lightbox.js        native <dialog> image viewer for .sfig images
 js/fx.js              footer verb cycle, magnetic .btn.solid
@@ -82,7 +83,7 @@ assets/               priya.webp, resume PDF, fonts/, projects/<slug>/*.webp
 assets/source/        original images (gitignored)
 refs/                 reference sites and exports (gitignored, never edit or ship)
 ```
-Script order matters. index.html: content, icons, main, home, timeline, grid, fx, cursor-label. case.html: content, story-vw, story-rz, story-nexus, icons, main, case, lightbox, fx, cursor-label. `icons.js` must load before `main.js` (footer uses ICONS).
+Script order matters. index.html: content, icons, main, home, timeline, grid, fx, cursor-label. case.html: content, story-vw, story-rz, story-nexus, icons, main, case, lightbox, interact, fx, cursor-label. `icons.js` must load before `main.js` (footer uses ICONS).
 
 ## Design tokens (css/style.css `:root`)
 - Colours: `--bg #f6f5f0`, `--surface #fcfbf7`, `--ink #12162b`, `--muted #566079`, `--faint #666c82`, `--line` (ink at 12%), single accent `--accent #2c44ff`, `--on-accent #f6f5f0`. Tints for project cards: `--c-coral #ff8a6b`, `--c-mint #7fd8a9`, `--c-butter #f5d658`, `--c-periwinkle #9aa5ff`. Light only.
@@ -100,7 +101,7 @@ Script order matters. index.html: content, icons, main, home, timeline, grid, fx
 - Highlight syntax in text: `[[words]]` becomes the accent highlight (stories) and `{t, tone:"hl"}` segments (about).
 
 ## Text that is NOT in content.js (change it in these files too)
-- Page title, meta description, Open Graph tags and favicon: top of `index.html` and `case.html`.
+- Page title, meta description, Open Graph (link preview) tags and favicon: top of `index.html` and `case.html`. The preview image is `assets/og-image.jpg` (1200x630); the tags use the full address https://priyaguptadesigns.netlify.app, so change it in both files if the domain changes.
 - `<noscript>` fallback with name, email, resume and social links: `index.html` line ~20 and `case.html` line ~16 (hard-coded; update when contact details change).
 - Per-case-study meta description and title: built in `case.js` from the project blurb and story summary.
 - Nav labels (Work, About, Resume, Contact) and footer labels (Email, Call, Elsewhere): `js/main.js`.
@@ -114,7 +115,10 @@ The site owner may not code. Edit `js/content.js` and the `story-*.js` files fir
 2. Add a project to `SITE.projects` with `story: "<slug>"`.
 3. Create `js/story-<x>.js`: `window.STORIES["<slug>"] = { base, wide?, dims?, summary:{outcome,problem,approach}, sections:[{id,n,label,note,h,lede,dark?,blocks:[...]}] }`.
 4. Add `<script src="js/story-<x>.js">` to case.html before main.js.
-Block types (case.js `renderBlock`): `p, lead, h3, note, eyebrow, img, gallery, duo, duo2, flow, big, versus, keepcut, pair, model, cards (cols 2/3/4, dark, stat), steps, instead, state`. `img` takes `src, alt, cap, pan`. `dims` maps file name to `[w,h]` to avoid layout shift. Every image needs real alt text. Cards: `[kicker, heading, text]`.
+Block types (case.js `renderBlock`): `p, lead, h3, note, eyebrow, img, gallery, duo, duo2, flow, big, versus, keepcut, pair, model, cards (cols 2/3/4, dark, stat), steps, instead, state, compare`. `img` takes `src, alt, cap, pan`. `dims` maps file name to `[w,h]` to avoid layout shift. Every image needs real alt text. Cards: `[kicker, heading, text]`.
+
+## Interactive pieces (keep working)
+- `compare` block (Virtual Waiter): `{ t:"compare", before:{src,alt,label}, after:{src,alt,label}, cap }`. Drag, tap or use arrow keys; the handle sweeps in from the edge on first view.
 
 ## UI behaviours to preserve
 - Hero: word-rise headline (`hero.headline` = `l1`, `before`, `circle`, `after`), hand-drawn ring round the `circle` word (hover shows a selection frame and a "Priya" cursor tag), portrait, handwritten notes with pointer parallax, "Currently at" status.

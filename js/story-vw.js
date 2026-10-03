@@ -74,6 +74,7 @@ window.STORIES["virtual-waiter"] = {
       h: "Instead of configuring a resort, I started configuring [[what exists]] inside it.",
       lede: "If this space has food, show food configuration. If it doesn’t, don’t make the operator configure it just to skip it.",
       blocks: [
+        { t: "compare", before: { src: "onboarding.webp", alt: "The original seven-screen onboarding flow, spread across many screens", label: "Before" }, after: { src: "modals.webp", alt: "The final add-a-new-space form, one modal for each space", label: "After" }, cap: "Before: seven screens in one path. After: one form for each space." },
         { t: "img", src: "modals.webp", alt: "The add-a-new-space form in the final onboarding: space details, manager, media, category, billing, timings and facilities", pan: true, cap: "Real product screen: adding a space." },
         { t: "big", lines: ["The space", "became the [[unit.]]"] },
         { t: "note", text: "The form didn’t become shorter by hiding fields. It became shorter by understanding what the space needed." },

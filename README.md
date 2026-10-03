@@ -44,6 +44,7 @@ Open `js/content.js` in any text editor (Notepad works, VS Code is better). Chan
 | Footer headline | `cycle:` and `footerLine:` | it reads "Let's [word] + footerLine". The words in `cycle` rotate. |
 | Work section title | `work:` | `title:` and `hint:` |
 | About paragraphs | `about:` | Wrap a phrase in its own `{ t: "…", tone: "hl" }` to highlight it in blue |
+| The three quick facts under About | `proof:` | each is `["bold start", "rest of the sentence"]` |
 | Toolkit chips | `tools:` | add or remove a line like `{ n: "Figma", icon: "figma", hex: "#F24E1E" }` |
 | Experience | `experience:` | each job has `when`, `role`, `where`, `result` and `stats` (the little bubbles) |
 | Project cards on the home page | `projects:` | `title`, `blurb`, `metric` and so on |
@@ -73,6 +74,7 @@ The common block types are:
 | `flow` | a row of boxes joined by arrows |
 | `big` | large statement lines |
 | `note` | a handwritten-style note |
+| `compare` | a before and after slider (used in Virtual Waiter) |
 
 Do not use long dashes (—) in the text. Use a comma, a full stop or a normal hyphen.
 
@@ -109,6 +111,9 @@ You can say things like "change the headline to …", "add a new case study from
 ## 8. Colours and fonts
 
 At the top of `css/style.css` there is a block called `:root`. The colours there control the whole site. For example, `--accent` is the main blue. Change the code after the colon, such as `#2c44ff`, to a different hex colour. Use only one accent colour so the site stays calm.
+
+### Link preview picture
+The picture people see when the link is shared (LinkedIn, WhatsApp, Slack) is `assets/og-image.jpg`, size 1200 by 630. Replace it with a new image of the same name and size to change it. The full site address used in the preview tags is at the top of `index.html` and `case.html`; update it there if the address changes. After changing the picture, refresh LinkedIn's cache at linkedin.com/post-inspector.
 
 ## 9. If something breaks
 

@@ -114,7 +114,7 @@
   const warm = () => {
     const c = navigator.connection;
     if (c && (c.saveData || /2g/.test(c.effectiveType || ""))) return;
-    ["case.html", "js/case.js", "js/lightbox.js", ...new Set(S.projects.filter((p) => !p.sample && p.story).map((p) => "js/story-" + ({ "virtual-waiter": "vw", rentzgo: "rz", nexus: "nexus" }[p.story] || p.story) + ".js"))].forEach((href) => {
+    ["case.html", "js/case.js", "js/lightbox.js", "js/interact.js", ...new Set(S.projects.filter((p) => !p.sample && p.story).map((p) => "js/story-" + ({ "virtual-waiter": "vw", rentzgo: "rz", nexus: "nexus" }[p.story] || p.story) + ".js"))].forEach((href) => {
       const l = document.createElement("link"); l.rel = "prefetch"; l.href = href; document.head.appendChild(l);
     });
   };

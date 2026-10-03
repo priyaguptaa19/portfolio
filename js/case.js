@@ -39,6 +39,18 @@
       case "steps": return `<div class="ssteps">${b.items.map(([n, t, p]) => `<div><span class="mono">${n}</span><b>${t}</b><p>${p}</p></div>`).join("")}</div>`;
       case "instead": return `<div class="sinstead">${b.rows.map(([a, z]) => `<div><span class="mono">Instead of</span><p>${a}</p><em class="snote">${z}</em></div>`).join("")}</div>`;
       case "state": return `<div class="sstate"><b>${b.left}</b><em class="snote">${b.right} &rarr;</em></div>`;
+      case "compare": {
+        const bd = dimOf(b.before.src), ad = dimOf(b.after.src);
+        return `<figure class="scmp" style="--p:94%">
+          <div class="scmp-box">
+            <img class="a" src="${base}${b.after.src}" alt="${b.after.alt}" width="${ad[0]}" height="${ad[1]}" loading="lazy" decoding="async">
+            <div class="scmp-clip"><img class="b" src="${base}${b.before.src}" alt="${b.before.alt}" width="${bd[0]}" height="${bd[1]}" loading="lazy" decoding="async"></div>
+            <span class="scmp-tag l">${b.before.label || "Before"}</span><span class="scmp-tag r">${b.after.label || "After"}</span>
+            <div class="scmp-h" role="slider" tabindex="0" aria-label="Drag to compare ${(b.before.label || "before").toLowerCase()} and ${(b.after.label || "after").toLowerCase()}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="94"><i></i></div>
+          </div>
+          ${b.cap ? `<figcaption class="snote">${b.cap}</figcaption>` : ""}
+        </figure>`;
+      }
       default: return "";
     }
   };
@@ -55,7 +67,6 @@
     <div class="out rv"><span class="mono">The short version</span>${hl(st.summary.outcome)}</div>
     <div class="pair rv"><div><span class="mono">The problem</span><p>${st.summary.problem}</p></div><div><span class="mono">What I did</span><p>${st.summary.approach}</p></div></div>
   </div></section>
-  <div class="toc" role="navigation" aria-label="In this story"><div class="wrap"><span class="mono">In this story</span><ol>${st.sections.filter((s) => s.n).map((s) => `<li><a href="#${s.id}"><span class="mono">${s.n}</span>${s.label}</a></li>`).join("")}</ol></div></div>
   ${st.sections.map((s) => `<section class="ss${s.dark ? " dark" : ""}${st.wide ? " wide" : ""}" id="${s.id}"><div class="wrap"><div class="ss-in">
     <aside class="sa">${s.n ? `<span class="mono">${s.n}</span>` : ""}<b>${s.label}</b>${s.note ? `<em class="snote">${s.note}</em>` : ""}</aside>
     <div class="sb">${s.h ? `<h2>${hl(s.h)}</h2>` : ""}${s.lede ? `<p class="slede">${hl(s.lede)}</p>` : ""}${(s.blocks || []).map((b) => renderBlock(b, st.base)).join("")}</div>
