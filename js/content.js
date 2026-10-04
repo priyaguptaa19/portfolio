@@ -15,7 +15,7 @@ window.SITE = {
   meetNote: "Meet Priya",
   meetSub: "the short version",
   links: [
-    { label: "LinkedIn", icon: "linkedin", href: "https://linkedin.com/in/priya-gupta-95589819b" },
+    { label: "LinkedIn", icon: "linkedin", href: "https://linkedin.com/in/priyaguptaa19" },
     { label: "Behance", icon: "behance", href: "https://behance.net/priyagupta152" },
   ],
   photo: "assets/priya.webp",
